@@ -1,0 +1,40 @@
+import rtconfig
+Import('RTT_ROOT')
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+src = Split("""
+CMSIS/CM4/DeviceSupport/system_MK60D10.c
+CMSIS/CM4/DeviceSupport/MDK-ARM/startup_MK60D10.s
+kinetis_StdPeriph/src/adc.c
+kinetis_StdPeriph/src/can.c
+kinetis_StdPeriph/src/common.c
+
+kinetis_StdPeriph/src/cpuidy.c
+kinetis_StdPeriph/src/dac.c
+kinetis_StdPeriph/src/dma.c
+kinetis_StdPeriph/src/enet.c
+kinetis_StdPeriph/src/flexbus.c
+kinetis_StdPeriph/src/ftm.c
+kinetis_StdPeriph/src/gpio.c
+kinetis_StdPeriph/src/i2c.c
+kinetis_StdPeriph/src/lptmr.c
+kinetis_StdPeriph/src/pit.c
+kinetis_StdPeriph/src/rtc.c
+kinetis_StdPeriph/src/sd.c
+kinetis_StdPeriph/src/spi.c
+kinetis_StdPeriph/src/systick.c
+kinetis_StdPeriph/src/tsi.c
+kinetis_StdPeriph/src/uart.c
+kinetis_StdPeriph/src/vref.c
+kinetis_StdPeriph/src/wdog.c
+""")
+
+path = [cwd + '/CMSIS/CM4/DeviceSupport',
+		cwd + '/Kinetis_StdPeriph/inc']
+
+group = DefineGroup('K60_StdPeriph', src, depend = [''], CPPPATH = path)
+
+Return('group')
