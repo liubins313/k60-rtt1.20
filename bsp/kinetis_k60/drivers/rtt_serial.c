@@ -37,6 +37,7 @@
 
 static struct rt_serial_device serial5;
 static struct serial_ringbuffer uart5_int_rx;
+
 static uint16_t *gRevCh = RT_NULL;
 
 static void UART_ISR(uint16_t byteReceived)

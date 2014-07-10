@@ -70,6 +70,8 @@ void rt_hw_board_init()
 //	SysTick_Config(g_Clocks_Freq.SystemCoreClock/1000);
 
 	rt_hw_usart_init();
+	rt_hw_usart3_init();
+	rt_hw_usart4_init();
 #ifdef RT_USING_CONSOLE
 	rt_console_set_device(CONSOLE_DEVICE);
 #endif

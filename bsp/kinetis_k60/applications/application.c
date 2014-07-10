@@ -24,8 +24,11 @@
 #include "components.h"
 #include "rtt_ksz8041.h"
 
+extern void uart_thread_entry(void* parameter);
+
 void rt_init_thread_entry(void* parameter)
 {
+		rt_thread_t thread;
 #ifdef RT_USING_MODULE
     rt_system_module_init();
 #endif
@@ -51,6 +54,13 @@ void rt_init_thread_entry(void* parameter)
 	nfs_init();
 #endif
 #endif
+
+    thread = rt_thread_create("uart3", uart_thread_entry, RT_NULL, 1024*8, 63, 20);
+    if (thread != RT_NULL)
+    {
+        rt_thread_startup(thread);
+    }
+
 }
 
 
