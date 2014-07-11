@@ -1,6 +1,5 @@
 #include <rtthread.h>
 #include <rthw.h>
-#include "jcprotocol.h"
 
 #define MAXLEN 1200
 
@@ -15,8 +14,6 @@ enum
     UART_RECV_BUSY
 };
 
-rt_device_t device;
-
 unsigned char uartcatch[MAXLEN];
 unsigned char *uartbuff = uartcatch;
 unsigned char *curuartptr = uartcatch;
@@ -25,7 +22,6 @@ unsigned char uartdo = 0;
 unsigned char uartbytecnt = 0;
 unsigned long uartrecvcnt = 0;
 unsigned long recvcnt = 0;
-unsigned long sendcnt = 0;
 
 extern rt_sem_t sem;
 
@@ -144,53 +140,44 @@ int uartRecvProc (unsigned char curchar)
     return 0;
 }
 
-//串口接收数据线程
 void uart_thread_entry(void* parameter)
 {
+    char *test1= {"this is test1\r\n"};
+    char *test2= {"this is test2\r\n"};
+    rt_device_t device;
     char ch;
 
     device = rt_device_find("uart3");
     if(device != RT_NULL)
     {
         rt_device_open(device, RT_DEVICE_OFLAG_RDWR);
-			
+
         rt_kprintf("open device uart3 succeed!\r\n");
         while(1)
         {
-            if(rt_device_read(device, 0, &ch, 1) == 1)
+            while(rt_device_read(device, 0, &ch, 1) == 1)
             {
-                uartRecvProc(ch);
+							uartRecvProc(ch);
             }
-				}
+        }
     }
 }
 
-//串口数据处理线程
-void uart3_deal_entry(void* parameter)
+void uart_deal_entry(void* parameter)
 {
-		rt_uint8_t buf[MAXLEN];
-		rt_uint8_t len_send;
-		rt_sem_take(sem, RT_WAITING_FOREVER);
-    while(1)
-    {
-			rt_sem_take(sem, RT_WAITING_FOREVER);
-			rt_kprintf("received a packet\r\n");
-			if((recvcnt=dataunpack(uartbuff,uartrecvcnt,buf)) != 0)//对接收的数据进行解包放到buf中，解包后数据长度recvcnt
-			{
-				rt_uint8_t i;
-				
-				for(i=0;i<recvcnt;i++)
-				{
-						rt_kprintf("%02x ",buf[i]); 
-				}
-				
-				len_send =	datapack(buf,2,uartbuff);//将要发送的buf中的2个数据进行打包后放到uartbuff中，打包后数据长度len_send
-				rt_device_write(device,0,uartbuff,len_send);
-			}
-			uartrecvcnt = 0;
-			uartbuff = uartcatch;
-			curuartptr = uartcatch;
-			uartstate = UART_IDLE;
-			
-    }
+	rt_err_t result;
+	while(1)
+	{
+		result = rt_sem_take(sem, RT_WAITING_FOREVER);
+		if (result == RT_EOK)
+        {
+           rt_kprintf("get packet\r\n");
+            /* 释放互斥锁 */
+        }
+        else
+        {
+            rt_kprintf("thread2: mutex take failed:%d\r\n", result);
+        }
+		rt_kprintf("get packet\r\n");
+	}
 }

@@ -12,7 +12,7 @@
 #define RT_THREAD_PRIORITY_MAX	64
 
 /* Tick per Second */
-#define RT_TICK_PER_SECOND	1000
+#define RT_TICK_PER_SECOND	100
 
 /* SECTION: RT_DEBUG */
 /* Thread Debug */
@@ -83,14 +83,14 @@
 /* #define RT_DFS_ELM_USE_LFN			1 */
 #define RT_DFS_ELM_MAX_LFN			255
 /* Maximum sector size to be handled. */
-#define RT_DFS_ELM_MAX_SECTOR_SIZE  512
+#define RT_DFS_ELM_MAX_SECTOR_SIZE  4096
 
 //#define RT_USING_DFS_ROMFS
 
 /* the max number of mounted filesystem */
-#define DFS_FILESYSTEMS_MAX			2
+#define DFS_FILESYSTEMS_MAX			3
 /* the max number of opened files 		*/
-#define DFS_FD_MAX					4
+#define DFS_FD_MAX					20
 
 /* SECTION: lwip, a lighwight TCP/IP protocol stack */
 #define RT_USING_LWIP

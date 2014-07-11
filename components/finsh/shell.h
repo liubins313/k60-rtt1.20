@@ -38,7 +38,7 @@
 #define FINSH_THREAD_PRIORITY 20
 #endif
 #ifndef FINSH_THREAD_STACK_SIZE
-#define FINSH_THREAD_STACK_SIZE 2048
+#define FINSH_THREAD_STACK_SIZE 4096
 #endif
 #define FINSH_CMD_SIZE		80
 
@@ -47,7 +47,7 @@
 #define FINSH_PROMPT		finsh_get_prompt()
 const char* finsh_get_prompt(void);
 #else
-#define FINSH_PROMPT		"finsh>>"
+#define FINSH_PROMPT		"msh>>"
 #endif
 
 #ifdef FINSH_USING_HISTORY

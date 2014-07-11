@@ -52,7 +52,6 @@ static void UART3_ISR(uint16_t byteReceived)
     ch = byteReceived;
     gRevCh3 = &byteReceived;
     rt_hw_serial_isr(&serial3);
-
     /* leave interrupt */
     rt_interrupt_leave();
 }
@@ -180,7 +179,6 @@ static int uart3_getc(struct rt_serial_device *serial)
 		uint8_t temp = 0;
 		int c;
     c = -1;
-    
     if(gRevCh3 != RT_NULL)
     {
         c = *gRevCh3;
@@ -225,8 +223,8 @@ static const struct rt_uart_ops uart4_ops =
 int rt_hw_usart3_init(void)
 {
     struct serial_configure config;
-    
-    UART_QuickInit(UART3_RX_PB10_TX_PB11, 115200);
+	
+		UART_QuickInit(UART3_RX_PB10_TX_PB11, 115200);
 
     config.baud_rate = BAUD_RATE_115200;
     config.bit_order = BIT_ORDER_LSB;
