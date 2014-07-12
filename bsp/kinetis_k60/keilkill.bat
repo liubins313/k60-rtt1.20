@@ -22,6 +22,7 @@ del JLinkLog.txt /s
 
 del project* /s
 del ./build/* /s
+del *orig /s
 
 del *.iex /s
 del *.htm /s

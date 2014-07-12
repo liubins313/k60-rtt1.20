@@ -4,6 +4,8 @@
 
 #define MAXLEN 1200
 
+struct rt_semaphore rx_sem;
+
 enum
 {
     UART_IDLE,
@@ -143,6 +145,15 @@ int uartRecvProc (unsigned char curchar)
     return 0;
 }
 
+static rt_err_t uart_rx_ind(rt_device_t dev, rt_size_t size)
+{
+    /* release semaphore to let finsh thread rx data */
+    rt_sem_release(&rx_sem);
+
+    return RT_EOK;
+}
+
+
 //串口接收数据线程
 void uart_thread_entry(void* parameter)
 {
@@ -154,9 +165,15 @@ void uart_thread_entry(void* parameter)
         rt_device_open(device, RT_DEVICE_OFLAG_RDWR);
 			
         rt_kprintf("open device uart3 succeed!\r\n");
+				rt_sem_init(&rx_sem, "uartrx", 0, 0);
+				
+				rt_device_set_rx_indicate(device, uart_rx_ind);
+				
         while(1)
         {
-            if(rt_device_read(device, 0, &ch, 1) == 1)
+            if (rt_sem_take(&rx_sem, RT_WAITING_FOREVER) != RT_EOK) //默认情况线程挂起，有数据时，系统会调用uart_rx_ind函数，释放信号量，线程得以执行
+							continue;
+						while(rt_device_read(device, 0, &ch, 1) == 1)
             {
                 uartRecvProc(ch);
             }

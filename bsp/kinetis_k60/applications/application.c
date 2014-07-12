@@ -59,12 +59,12 @@ void rt_init_thread_entry(void* parameter)
 #endif
 
 		sem = rt_sem_create("sem", 1, RT_IPC_FLAG_FIFO);
-    thread = rt_thread_create("uart3", uart_thread_entry, RT_NULL, 1024*2, 0x21, 20);
+    thread = rt_thread_create("uart3", uart_thread_entry, RT_NULL, 1024*2, 0x22, 20);
     if (thread != RT_NULL)
     {
         rt_thread_startup(thread);
     }
-		thread = rt_thread_create("uart3_d", uart3_deal_entry, RT_NULL, 1024*2, 0x20, 20);
+		thread = rt_thread_create("uart3_d", uart3_deal_entry, RT_NULL, 1024*2, 0x21, 20);
     if (thread != RT_NULL)
     {
         rt_thread_startup(thread);
