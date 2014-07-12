@@ -140,7 +140,6 @@ int uartRecvProc (unsigned char curchar)
         curuartptr = uartcatch;
         uartstate = UART_IDLE;
     }
-
     return 0;
 }
 
